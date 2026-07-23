@@ -33,6 +33,23 @@ export class App {
     this.selectedProduct.set(product);
   }
 
+  addProduct() {
+    const nextId = this.products.length > 0
+      ? Math.max(...this.products.map(p => p.id)) + 1
+      : 1;
+
+    const newProduct: Product = {
+      id: nextId,
+      name: '',
+      price: 0,
+      category: 'Electronics',
+      available: true
+    };
+
+    this.products.push(newProduct);
+    this.selectedProduct.set(newProduct);
+  }
+
   products: Product[] = [
     {
       id: 1,
