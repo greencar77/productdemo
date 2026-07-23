@@ -19,6 +19,79 @@ interface Product {
   available: boolean;
 }
 
+const DEFAULT_PRODUCTS: Product[] = [
+  {
+    id: 1,
+    name: 'Wireless Mouse',
+    price: 29.99,
+    category: 'Electronics',
+    available: true,
+  },
+  {
+    id: 2,
+    name: 'Bluetooth Speaker',
+    price: 79.99,
+    category: 'Electronics',
+    available: false,
+  },
+  {
+    id: 3,
+    name: 'Organic Apples',
+    price: 4.99,
+    category: 'Food',
+    available: true,
+  },
+  {
+    id: 4,
+    name: 'Whole Wheat Bread',
+    price: 2.49,
+    category: 'Food',
+    available: true,
+  },
+  {
+    id: 5,
+    name: 'Dark Chocolate',
+    price: 5.99,
+    category: 'Food',
+    available: false,
+  },
+  {
+    id: 6,
+    name: 'Cotton T-Shirt',
+    price: 19.99,
+    category: 'Clothing',
+    available: true,
+  },
+  {
+    id: 7,
+    name: 'Denim Jeans',
+    price: 49.99,
+    category: 'Clothing',
+    available: true,
+  },
+  {
+    id: 8,
+    name: 'Hooded Sweatshirt',
+    price: 39.99,
+    category: 'Clothing',
+    available: false,
+  },
+  {
+    id: 9,
+    name: 'Mechanical Keyboard',
+    price: 99.99,
+    category: 'Electronics',
+    available: true,
+  },
+  {
+    id: 10,
+    name: 'USB-C Charger',
+    price: 24.99,
+    category: 'Electronics',
+    available: true,
+  },
+];
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, FormsModule],
@@ -29,6 +102,31 @@ export class App {
   protected readonly title = signal('productdemo');
   selectedProduct = signal<Product | null>(null);
   editingProduct = signal<Product | null>(null);
+
+  products: Product[] = this.loadProducts();
+
+  private loadProducts(): Product[] {
+    const saved = localStorage.getItem('products');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Error loading products from localStorage', e);
+      }
+    }
+    return [...DEFAULT_PRODUCTS];
+  }
+
+  private saveToLocalStorage() {
+    localStorage.setItem('products', JSON.stringify(this.products));
+  }
+
+  resetData() {
+    this.products = [...DEFAULT_PRODUCTS];
+    this.saveToLocalStorage();
+    this.selectedProduct.set(null);
+    this.editingProduct.set(null);
+  }
 
   selectProduct(product: Product) {
     this.selectedProduct.set(product);
@@ -66,6 +164,7 @@ export class App {
     }
     this.selectedProduct.set({ ...edited });
     this.editingProduct.set(null);
+    this.saveToLocalStorage();
   }
 
   cancelEdit() {
@@ -81,78 +180,6 @@ export class App {
     if (this.editingProduct()?.id === id) {
       this.editingProduct.set(null);
     }
+    this.saveToLocalStorage();
   }
-
-  products: Product[] = [
-    {
-      id: 1,
-      name: 'Wireless Mouse',
-      price: 29.99,
-      category: 'Electronics',
-      available: true,
-    },
-    {
-      id: 2,
-      name: 'Bluetooth Speaker',
-      price: 79.99,
-      category: 'Electronics',
-      available: false,
-    },
-    {
-      id: 3,
-      name: 'Organic Apples',
-      price: 4.99,
-      category: 'Food',
-      available: true,
-    },
-    {
-      id: 4,
-      name: 'Whole Wheat Bread',
-      price: 2.49,
-      category: 'Food',
-      available: true,
-    },
-    {
-      id: 5,
-      name: 'Dark Chocolate',
-      price: 5.99,
-      category: 'Food',
-      available: false,
-    },
-    {
-      id: 6,
-      name: 'Cotton T-Shirt',
-      price: 19.99,
-      category: 'Clothing',
-      available: true,
-    },
-    {
-      id: 7,
-      name: 'Denim Jeans',
-      price: 49.99,
-      category: 'Clothing',
-      available: true,
-    },
-    {
-      id: 8,
-      name: 'Hooded Sweatshirt',
-      price: 39.99,
-      category: 'Clothing',
-      available: false,
-    },
-    {
-      id: 9,
-      name: 'Mechanical Keyboard',
-      price: 99.99,
-      category: 'Electronics',
-      available: true,
-    },
-    {
-      id: 10,
-      name: 'USB-C Charger',
-      price: 24.99,
-      category: 'Electronics',
-      available: true,
-    },
-  ];
 }

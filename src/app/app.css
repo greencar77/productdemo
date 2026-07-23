@@ -50,7 +50,6 @@ button {
 }
 
 .add-button {
-  margin-bottom: 10px;
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -59,6 +58,23 @@ button {
 
 .add-button:hover {
   background-color: #45a049;
+}
+
+.reset-button {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.reset-button:hover {
+  background-color: #e68a00;
+}
+
+.table-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .delete-button {

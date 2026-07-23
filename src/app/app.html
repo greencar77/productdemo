@@ -24,7 +24,10 @@
       }
     </tbody>
   </table>
-  <button (click)="addProduct()" class="add-button">Add Product</button>
+  <div class="table-actions">
+    <button (click)="addProduct()" class="add-button">Add Product</button>
+    <button (click)="resetData()" class="reset-button">Reset Data</button>
+  </div>
 
   @if (editingProduct(); as product) {
     <div class="details-form">
