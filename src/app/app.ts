@@ -28,9 +28,11 @@ interface Product {
 export class App {
   protected readonly title = signal('productdemo');
   selectedProduct = signal<Product | null>(null);
+  editingProduct = signal<Product | null>(null);
 
   selectProduct(product: Product) {
     this.selectedProduct.set(product);
+    this.editingProduct.set({ ...product });
   }
 
   addProduct() {
@@ -46,14 +48,38 @@ export class App {
       available: true
     };
 
-    this.products.push(newProduct);
-    this.selectedProduct.set(newProduct);
+    this.selectedProduct.set(null); // It's a new entry
+    this.editingProduct.set(newProduct);
+  }
+
+  saveProduct() {
+    const edited = this.editingProduct();
+    if (!edited || !edited.name || edited.price === null || edited.price === undefined) return;
+
+    const index = this.products.findIndex(p => p.id === edited.id);
+    if (index !== -1) {
+      // Update existing
+      this.products[index] = { ...edited };
+    } else {
+      // Add new
+      this.products.push({ ...edited });
+    }
+    this.selectedProduct.set({ ...edited });
+    this.editingProduct.set(null);
+  }
+
+  cancelEdit() {
+    this.editingProduct.set(null);
+    this.selectedProduct.set(null);
   }
 
   deleteProduct(id: number) {
     this.products = this.products.filter(p => p.id !== id);
     if (this.selectedProduct()?.id === id) {
       this.selectedProduct.set(null);
+    }
+    if (this.editingProduct()?.id === id) {
+      this.editingProduct.set(null);
     }
   }
 

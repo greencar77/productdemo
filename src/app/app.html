@@ -26,38 +26,47 @@
   </table>
   <button (click)="addProduct()" class="add-button">Add Product</button>
 
-  @if (selectedProduct(); as product) {
+  @if (editingProduct(); as product) {
     <div class="details-form">
       <h2>Product Details</h2>
-      <div class="field">
-        <label>ID:</label>
-        <span>{{ product.id }}</span>
-      </div>
-      <div class="field">
-        <label>Name:</label>
-        <input [(ngModel)]="product.name" type="text" />
-      </div>
-      <div class="field">
-        <label>Price:</label>
-        <input [(ngModel)]="product.price" type="number" step="0.01" />
-      </div>
-      <div class="field">
-        <label>Category:</label>
-        <select [(ngModel)]="product.category">
-          <option value="Electronics">Electronics</option>
-          <option value="Food">Food</option>
-          <option value="Clothing">Clothing</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Availability:</label>
-        <input [(ngModel)]="product.available" type="checkbox" />
-        <span>{{ product.available ? 'Available' : 'Out of Stock' }}</span>
-      </div>
-      <div class="actions">
-        <button (click)="selectedProduct.set(null)">Close</button>
-        <button class="delete-button" (click)="deleteProduct(product.id)">Delete Product</button>
-      </div>
+      <form #productForm="ngForm">
+        <div class="field">
+          <label>ID:</label>
+          <span>{{ product.id }}</span>
+        </div>
+        <div class="field">
+          <label>Name:</label>
+          <input [(ngModel)]="product.name" name="name" type="text" required #name="ngModel" [class.invalid]="name.invalid && name.touched" />
+          @if (name.invalid && name.touched) {
+            <div class="error">Name is mandatory</div>
+          }
+        </div>
+        <div class="field">
+          <label>Price:</label>
+          <input [(ngModel)]="product.price" name="price" type="number" step="0.01" required #price="ngModel" [class.invalid]="price.invalid && price.touched" />
+          @if (price.invalid && price.touched) {
+            <div class="error">Price is mandatory</div>
+          }
+        </div>
+        <div class="field">
+          <label>Category:</label>
+          <select [(ngModel)]="product.category" name="category">
+            <option value="Electronics">Electronics</option>
+            <option value="Food">Food</option>
+            <option value="Clothing">Clothing</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Availability:</label>
+          <input [(ngModel)]="product.available" name="available" type="checkbox" />
+          <span>{{ product.available ? 'Available' : 'Out of Stock' }}</span>
+        </div>
+        <div class="actions">
+          <button type="button" (click)="cancelEdit()">Cancel</button>
+          <button type="button" class="save-button" (click)="saveProduct()" [disabled]="productForm.invalid">Save</button>
+          <button type="button" class="delete-button" (click)="deleteProduct(product.id)">Delete Product</button>
+        </div>
+      </form>
     </div>
   }
 </div>
