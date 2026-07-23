@@ -30,6 +30,19 @@
   width: 100px;
 }
 
+.field input[type="text"],
+.field input[type="number"],
+.field select {
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.field input[type="checkbox"] {
+  margin-right: 5px;
+}
+
 button {
   margin-top: 10px;
   padding: 5px 15px;
