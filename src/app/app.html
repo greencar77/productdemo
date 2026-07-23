@@ -7,6 +7,7 @@
       <th>Price</th>
       <th>Category</th>
       <th>Availability</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -16,6 +17,9 @@
           <td>{{ product.price }}</td>
           <td>{{ product.category }}</td>
           <td>{{ product.available }}</td>
+          <td>
+            <button class="delete-button small" (click)="deleteProduct(product.id); $event.stopPropagation()">Delete</button>
+          </td>
         </tr>
       }
     </tbody>
@@ -50,7 +54,10 @@
         <input [(ngModel)]="product.available" type="checkbox" />
         <span>{{ product.available ? 'Available' : 'Out of Stock' }}</span>
       </div>
-      <button (click)="selectedProduct.set(null)">Close</button>
+      <div class="actions">
+        <button (click)="selectedProduct.set(null)">Close</button>
+        <button class="delete-button" (click)="deleteProduct(product.id)">Delete Product</button>
+      </div>
     </div>
   }
 </div>

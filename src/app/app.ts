@@ -50,6 +50,13 @@ export class App {
     this.selectedProduct.set(newProduct);
   }
 
+  deleteProduct(id: number) {
+    this.products = this.products.filter(p => p.id !== id);
+    if (this.selectedProduct()?.id === id) {
+      this.selectedProduct.set(null);
+    }
+  }
+
   products: Product[] = [
     {
       id: 1,

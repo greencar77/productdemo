@@ -60,3 +60,30 @@ button {
 .add-button:hover {
   background-color: #45a049;
 }
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.delete-button:hover {
+  background-color: #da190b;
+}
+
+.delete-button.small {
+  padding: 2px 8px;
+  margin: 0;
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.actions button {
+  margin-top: 0;
+}
