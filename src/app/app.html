@@ -11,7 +11,7 @@
     </thead>
     <tbody>
       @for (product of products; track product.id) {
-        <tr>
+        <tr (click)="selectProduct(product)" class="product-row">
           <td>{{ product.name }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.category }}</td>
@@ -20,4 +20,31 @@
       }
     </tbody>
   </table>
+
+  @if (selectedProduct(); as product) {
+    <div class="details-form">
+      <h2>Product Details</h2>
+      <div class="field">
+        <label>ID:</label>
+        <span>{{ product.id }}</span>
+      </div>
+      <div class="field">
+        <label>Name:</label>
+        <span>{{ product.name }}</span>
+      </div>
+      <div class="field">
+        <label>Price:</label>
+        <span>{{ product.price }}</span>
+      </div>
+      <div class="field">
+        <label>Category:</label>
+        <span>{{ product.category }}</span>
+      </div>
+      <div class="field">
+        <label>Availability:</label>
+        <span>{{ product.available ? 'Available' : 'Out of Stock' }}</span>
+      </div>
+      <button (click)="selectedProduct.set(null)">Close</button>
+    </div>
+  }
 </div>

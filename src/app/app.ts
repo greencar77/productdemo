@@ -26,6 +26,11 @@ interface Product {
 })
 export class App {
   protected readonly title = signal('productdemo');
+  selectedProduct = signal<Product | null>(null);
+
+  selectProduct(product: Product) {
+    this.selectedProduct.set(product);
+  }
 
   products: Product[] = [
     {
