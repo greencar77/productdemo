@@ -54,11 +54,11 @@ export interface ProductGroup {
 export const PROD_GROUPS: ProductGroup[] = [
   {
     id: 'default',
-    fields: ['name', 'price', 'category', 'available'],
+    fields: ['category', 'name', 'price', 'available'],
   },
   {
     id: 'group_with_vat',
-    fields: ['name', 'price', 'vat', 'category', 'available', 'origin'],
+    fields: ['category', 'name', 'price', 'vat', 'origin', 'available'],
   },
 ];
 

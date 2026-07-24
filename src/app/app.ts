@@ -32,7 +32,10 @@ export class App {
   getFieldsForGroup(groupId: string): FieldSpec[] {
     const group = PROD_GROUPS.find((g) => g.id === groupId);
     if (!group) return [];
-    return FIELDS.filter((f) => group.fields.includes(f.key));
+    //output fields in the order they appear in PROD_GROUPS definition
+    return group.fields
+      .map((key) => FIELDS.find((f) => f.key === key))
+      .filter((f): f is FieldSpec => !!f);
   }
 
   getProductGroups() {
