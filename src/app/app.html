@@ -33,7 +33,7 @@
           <h2>Product Details</h2>
           <form #productForm="ngForm">
             <div class="field">
-              <label>Product group:</label>
+              <label>Product group*:</label>
               <select [(ngModel)]="product.prodGroup" name="prodGroup" (change)="onGroupChange()">
                 @for (group of getProductGroups(); track group.id) {
                   <option [value]="group.id">{{ group.id }}</option>
@@ -43,7 +43,7 @@
 
             @for (field of getFieldsForGroup(product.prodGroup); track field.key) {
               <div class="field">
-                <label>{{ field.label }}:</label>
+                <label>{{ field.label }}{{ field.required ? '*' : '' }}:</label>
 
                 @switch (field.type) {
                   @case ('text') {
