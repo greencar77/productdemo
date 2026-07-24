@@ -62,6 +62,9 @@
                     <select [name]="field.key" [required]="field.required"
                             [ngModel]="getFieldValue(product, field.key)"
                             (ngModelChange)="setFieldValue(product, field.key, $event)">
+                      @if (!field.required) {
+                        <option [value]="undefined">-- Select --</option>
+                      }
                       @for (opt of field.options; track opt) {
                         <option [value]="opt">{{ opt }}</option>
                       }
