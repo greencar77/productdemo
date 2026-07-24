@@ -1,11 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Product, DEFAULT_PRODUCTS, FIELDS, FieldSpec, PROD_GROUPS } from './products';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FormsModule],
+  imports: [FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -17,12 +16,12 @@ export class App {
   products: Product[] = this.loadProducts();
 
   getFieldValue(product: Product, key: string): any {
-    const entry = product.values.find(v => v[0] === key);
+    const entry = product.values.find((v) => v[0] === key);
     return entry ? entry[1] : undefined;
   }
 
   setFieldValue(product: Product, key: string, value: any) {
-    const entry = product.values.find(v => v[0] === key);
+    const entry = product.values.find((v) => v[0] === key);
     if (entry) {
       entry[1] = value;
     } else {
@@ -31,9 +30,9 @@ export class App {
   }
 
   getFieldsForGroup(groupId: string): FieldSpec[] {
-    const group = PROD_GROUPS.find(g => g.id === groupId);
+    const group = PROD_GROUPS.find((g) => g.id === groupId);
     if (!group) return [];
-    return FIELDS.filter(f => group.fields.includes(f.key));
+    return FIELDS.filter((f) => group.fields.includes(f.key));
   }
 
   getProductGroups() {
@@ -46,7 +45,7 @@ export class App {
 
     // Initialize missing fields for the new group
     const fields = this.getFieldsForGroup(product.prodGroup);
-    fields.forEach(field => {
+    fields.forEach((field) => {
       if (this.getFieldValue(product, field.key) === undefined) {
         this.setFieldValue(product, field.key, this.getDefaultFieldValue(field));
       }
@@ -96,9 +95,7 @@ export class App {
   }
 
   addProduct() {
-    const nextId = this.products.length > 0
-      ? Math.max(...this.products.map(p => p.id)) + 1
-      : 1;
+    const nextId = this.products.length > 0 ? Math.max(...this.products.map((p) => p.id)) + 1 : 1;
 
     const defaultGroupId = 'default';
     const fields = this.getFieldsForGroup(defaultGroupId);
@@ -106,7 +103,7 @@ export class App {
     const newProduct: Product = {
       id: nextId,
       prodGroup: defaultGroupId,
-      values: fields.map(field => [field.key, this.getDefaultFieldValue(field)])
+      values: fields.map((field) => [field.key, this.getDefaultFieldValue(field)]),
     };
 
     this.selectedProduct.set(null); // It's a new entry
@@ -121,7 +118,7 @@ export class App {
     const price = this.getFieldValue(edited, 'price');
     if (!name || price === null || price === undefined) return;
 
-    const index = this.products.findIndex(p => p.id === edited.id);
+    const index = this.products.findIndex((p) => p.id === edited.id);
     if (index !== -1) {
       // Update existing
       this.products[index] = JSON.parse(JSON.stringify(edited));
@@ -140,7 +137,7 @@ export class App {
   }
 
   deleteProduct(id: number) {
-    this.products = this.products.filter(p => p.id !== id);
+    this.products = this.products.filter((p) => p.id !== id);
     if (this.selectedProduct()?.id === id) {
       this.selectedProduct.set(null);
     }
