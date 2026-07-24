@@ -3,15 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Product, DEFAULT_PRODUCTS } from './products';
 
-//don't use by now
-interface FieldSpec {
-  key: string;
-  label: string;
-  type: ['text', 'number', 'select', 'boolean'];
-  required: boolean;
-  options?: string[];
-}
-
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, FormsModule],

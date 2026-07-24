@@ -1,3 +1,12 @@
+//don't use by now
+interface FieldSpec {
+  key: string;
+  label: string;
+  type: ['text', 'number', 'select', 'boolean'];
+  required: boolean;
+  options?: string[];
+}
+
 export interface Product {
   id: number;
   name: string;
