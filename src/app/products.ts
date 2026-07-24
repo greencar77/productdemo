@@ -1,4 +1,4 @@
-interface FieldSpec {
+export interface FieldSpec {
   key: string;
   label: string;
   type: 'text' | 'number' | 'select' | 'boolean';
@@ -6,7 +6,7 @@ interface FieldSpec {
   options?: string[];
 }
 
-const FIELDS: FieldSpec[] = [
+export const FIELDS: FieldSpec[] = [
   {
     key: 'name',
     label: 'Product name',
@@ -46,12 +46,12 @@ const FIELDS: FieldSpec[] = [
   },
 ];
 
-interface ProductGroup {
+export interface ProductGroup {
   id: string;
   fields: string[];
 }
 
-const PROD_GROUPS: ProductGroup[] = [
+export const PROD_GROUPS: ProductGroup[] = [
   {
     id: 'default',
     fields: ['name', 'price', 'category', 'available'],
