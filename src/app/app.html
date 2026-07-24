@@ -33,11 +33,7 @@
           <h2>Product Details</h2>
           <form #productForm="ngForm">
             <div class="field">
-              <label>ID:</label>
-              <span>{{ product.id }}</span>
-            </div>
-            <div class="field">
-              <label>Product Group:</label>
+              <label>Product group:</label>
               <select [(ngModel)]="product.prodGroup" name="prodGroup" (change)="onGroupChange()">
                 @for (group of getProductGroups(); track group.id) {
                   <option [value]="group.id">{{ group.id }}</option>
