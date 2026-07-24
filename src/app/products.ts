@@ -57,7 +57,7 @@ export const PROD_GROUPS: ProductGroup[] = [
     fields: ['name', 'price', 'category', 'available'],
   },
   {
-    id: 'food',
+    id: 'group_with_vat',
     fields: ['name', 'price', 'vat', 'category', 'available', 'origin'],
   },
 ];
@@ -91,7 +91,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 3,
-    prodGroup: 'food',
+    prodGroup: 'group_with_vat',
     values: [
       ['name', 'Organic Apples'],
       ['price', 4.99],
@@ -103,7 +103,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 4,
-    prodGroup: 'food',
+    prodGroup: 'group_with_vat',
     values: [
       ['name', 'Whole Wheat Bread'],
       ['price', 2.49],
@@ -115,7 +115,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
   },
   {
     id: 5,
-    prodGroup: 'food',
+    prodGroup: 'group_with_vat',
     values: [
       ['name', 'Dark Chocolate'],
       ['price', 5.99],
