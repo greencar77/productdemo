@@ -48,12 +48,23 @@ export class App {
     const fields = this.getFieldsForGroup(product.prodGroup);
     fields.forEach(field => {
       if (this.getFieldValue(product, field.key) === undefined) {
-        let defaultValue: any = '';
-        if (field.type === 'number') defaultValue = 0;
-        if (field.type === 'boolean') defaultValue = false;
-        this.setFieldValue(product, field.key, defaultValue);
+        this.setFieldValue(product, field.key, this.getDefaultFieldValue(field));
       }
     });
+  }
+
+  private getDefaultFieldValue(field: FieldSpec): any {
+    switch (field.type) {
+      case 'number':
+        return 0;
+      case 'boolean':
+        return false;
+      case 'select':
+        return field.options && field.options.length > 0 ? field.options[0] : undefined;
+      case 'text':
+      default:
+        return '';
+    }
   }
 
   private loadProducts(): Product[] {
@@ -89,15 +100,13 @@ export class App {
       ? Math.max(...this.products.map(p => p.id)) + 1
       : 1;
 
+    const defaultGroupId = 'default';
+    const fields = this.getFieldsForGroup(defaultGroupId);
+
     const newProduct: Product = {
       id: nextId,
-      prodGroup: 'default',
-      values: [
-        ['name', ''],
-        ['price', 0],
-        ['category', 'Electronics'],
-        ['available', true]
-      ]
+      prodGroup: defaultGroupId,
+      values: fields.map(field => [field.key, this.getDefaultFieldValue(field)])
     };
 
     this.selectedProduct.set(null); // It's a new entry
