@@ -1,86 +1,93 @@
 <div class="container">
   <h1>Products</h1>
-  <table>
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-      @for (product of products; track product.id) {
-        <tr (click)="selectProduct(product)" class="product-row">
-          <td>{{ getFieldValue(product, 'name') }}</td>
-          <td>
-            <button class="delete-button small" (click)="deleteProduct(product.id); $event.stopPropagation()">Delete</button>
-          </td>
+
+  <div class="main-content">
+    <div class="table-section">
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Actions</th>
         </tr>
-      }
-    </tbody>
-  </table>
-  <div class="table-actions">
-    <button (click)="addProduct()" class="add-button">Add Product</button>
-    <button (click)="resetData()" class="reset-button">Reset Data</button>
-  </div>
+        </thead>
+        <tbody>
+          @for (product of products; track product.id) {
+            <tr (click)="selectProduct(product)" class="product-row">
+              <td>{{ getFieldValue(product, 'name') }}</td>
+              <td>
+                <button class="delete-button small" (click)="deleteProduct(product.id); $event.stopPropagation()">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="table-actions">
+        <button (click)="addProduct()" class="add-button">Add Product</button>
+        <button (click)="resetData()" class="reset-button">Reset Data</button>
+      </div>
+    </div>
 
-  @if (editingProduct(); as product) {
-    <div class="details-form">
-      <h2>Product Details</h2>
-      <form #productForm="ngForm">
-        <div class="field">
-          <label>ID:</label>
-          <span>{{ product.id }}</span>
-        </div>
-        <div class="field">
-          <label>Product Group:</label>
-          <select [(ngModel)]="product.prodGroup" name="prodGroup" (change)="onGroupChange()">
-            @for (group of getProductGroups(); track group.id) {
-              <option [value]="group.id">{{ group.id }}</option>
-            }
-          </select>
-        </div>
-
-        @for (field of getFieldsForGroup(product.prodGroup); track field.key) {
-          <div class="field">
-            <label>{{ field.label }}:</label>
-
-            @if (field.type === 'text') {
-              <input [name]="field.key" type="text" [required]="field.required"
-                     [ngModel]="getFieldValue(product, field.key)"
-                     (ngModelChange)="setFieldValue(product, field.key, $event)"
-                     #f="ngModel" [class.invalid]="f.invalid && f.touched" />
-            } @else if (field.type === 'number') {
-              <input [name]="field.key" type="number" step="0.01" [required]="field.required"
-                     [ngModel]="getFieldValue(product, field.key)"
-                     (ngModelChange)="setFieldValue(product, field.key, $event)"
-                     #f="ngModel" [class.invalid]="f.invalid && f.touched" />
-            } @else if (field.type === 'select') {
-              <select [name]="field.key" [required]="field.required"
-                      [ngModel]="getFieldValue(product, field.key)"
-                      (ngModelChange)="setFieldValue(product, field.key, $event)">
-                @for (opt of field.options; track opt) {
-                  <option [value]="opt">{{ opt }}</option>
+    <div class="form-section">
+      @if (editingProduct(); as product) {
+        <div class="details-form">
+          <h2>Product Details</h2>
+          <form #productForm="ngForm">
+            <div class="field">
+              <label>ID:</label>
+              <span>{{ product.id }}</span>
+            </div>
+            <div class="field">
+              <label>Product Group:</label>
+              <select [(ngModel)]="product.prodGroup" name="prodGroup" (change)="onGroupChange()">
+                @for (group of getProductGroups(); track group.id) {
+                  <option [value]="group.id">{{ group.id }}</option>
                 }
               </select>
-            } @else if (field.type === 'boolean') {
-              <input [name]="field.key" type="checkbox"
-                     [ngModel]="getFieldValue(product, field.key)"
-                     (ngModelChange)="setFieldValue(product, field.key, $event)" />
-              <span>{{ getFieldValue(product, field.key) ? 'True' : 'False' }}</span>
+            </div>
+
+            @for (field of getFieldsForGroup(product.prodGroup); track field.key) {
+              <div class="field">
+                <label>{{ field.label }}:</label>
+
+                @if (field.type === 'text') {
+                  <input [name]="field.key" type="text" [required]="field.required"
+                         [ngModel]="getFieldValue(product, field.key)"
+                         (ngModelChange)="setFieldValue(product, field.key, $event)"
+                         #f="ngModel" [class.invalid]="f.invalid && f.touched" />
+                } @else if (field.type === 'number') {
+                  <input [name]="field.key" type="number" step="0.01" [required]="field.required"
+                         [ngModel]="getFieldValue(product, field.key)"
+                         (ngModelChange)="setFieldValue(product, field.key, $event)"
+                         #f="ngModel" [class.invalid]="f.invalid && f.touched" />
+                } @else if (field.type === 'select') {
+                  <select [name]="field.key" [required]="field.required"
+                          [ngModel]="getFieldValue(product, field.key)"
+                          (ngModelChange)="setFieldValue(product, field.key, $event)">
+                    @for (opt of field.options; track opt) {
+                      <option [value]="opt">{{ opt }}</option>
+                    }
+                  </select>
+                } @else if (field.type === 'boolean') {
+                  <input [name]="field.key" type="checkbox"
+                         [ngModel]="getFieldValue(product, field.key)"
+                         (ngModelChange)="setFieldValue(product, field.key, $event)" />
+                  <span>{{ getFieldValue(product, field.key) ? 'True' : 'False' }}</span>
+                }
+
+                @if (field.required) {
+                   <!-- Simple error display if you have a way to track dynamic form validation -->
+                }
+              </div>
             }
 
-            @if (field.required) {
-               <!-- Simple error display if you have a way to track dynamic form validation -->
-            }
-          </div>
-        }
-
-        <div class="actions">
-          <button type="button" (click)="cancelEdit()">Cancel</button>
-          <button type="button" class="save-button" (click)="saveProduct()" [disabled]="productForm.invalid">Save</button>
-          <button type="button" class="delete-button" (click)="deleteProduct(product.id)">Delete Product</button>
+            <div class="actions">
+              <button type="button" (click)="cancelEdit()">Cancel</button>
+              <button type="button" class="save-button" (click)="saveProduct()" [disabled]="productForm.invalid">Save</button>
+              <button type="button" class="delete-button" (click)="deleteProduct(product.id)">Delete Product</button>
+            </div>
+          </form>
         </div>
-      </form>
+      }
     </div>
-  }
+  </div>
 </div>

@@ -6,13 +6,32 @@
   background-color: #f0f0f0;
 }
 
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-content {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.table-section {
+  flex: 1;
+}
+
+.form-section {
+  flex: 1;
+  min-width: 400px;
+}
+
 .details-form {
-  margin-top: 20px;
   padding: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fafafa;
-  max-width: 400px;
 }
 
 .details-form h2 {
@@ -27,7 +46,7 @@
   font-weight: bold;
   margin-right: 10px;
   display: inline-block;
-  width: 100px;
+  width: 130px;
 }
 
 .field input[type="text"],
@@ -127,6 +146,6 @@ button {
 .error {
   color: #f44336;
   font-size: 12px;
-  margin-left: 110px;
+  margin-left: 140px;
   margin-top: 2px;
 }
