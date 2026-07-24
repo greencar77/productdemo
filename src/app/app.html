@@ -71,7 +71,6 @@
                   <input [name]="field.key" type="checkbox"
                          [ngModel]="getFieldValue(product, field.key)"
                          (ngModelChange)="setFieldValue(product, field.key, $event)" />
-                  <span>{{ getFieldValue(product, field.key) ? 'True' : 'False' }}</span>
                 }
 
                 @if (field.required) {
