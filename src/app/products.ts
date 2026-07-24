@@ -1,89 +1,178 @@
-//don't use by now
 interface FieldSpec {
   key: string;
   label: string;
-  type: ['text', 'number', 'select', 'boolean'];
+  type: 'text' | 'number' | 'select' | 'boolean';
   required: boolean;
   options?: string[];
 }
 
+const FIELDS: FieldSpec[] = [
+  {
+    key: 'name',
+    label: 'Product name',
+    type: 'text',
+    required: true,
+  },
+  {
+    key: 'price',
+    label: 'Price',
+    type: 'number',
+    required: true,
+  },
+  {
+    key: 'vat',
+    label: 'VAT',
+    type: 'number',
+    required: false,
+  },
+  {
+    key: 'category',
+    label: 'Category',
+    type: 'select',
+    required: false,
+    options: ['Electronics', 'Food', 'Clothing'],
+  },
+  {
+    key: 'available',
+    label: 'Available',
+    type: 'boolean',
+    required: false,
+  },
+  {
+    key: 'origin',
+    label: 'Origin',
+    type: 'text',
+    required: true,
+  },
+];
+
+interface ProductGroup {
+  id: string;
+  fields: string[];
+}
+
+const PROD_GROUPS: ProductGroup[] = [
+  {
+    id: 'default',
+    fields: ['name', 'price', 'category', 'available'],
+  },
+  {
+    id: 'food',
+    fields: ['name', 'price', 'vat', 'category', 'available', 'origin'],
+  },
+];
+
 export interface Product {
   id: number;
-  name: string;
-  price: number;
-  category: 'Electronics' | 'Food' | 'Clothing';
-  available: boolean;
+  prodGroup: string;
+  values: [string, any][];
 }
 
 export const DEFAULT_PRODUCTS: Product[] = [
   {
     id: 1,
-    name: 'Wireless Mouse',
-    price: 29.99,
-    category: 'Electronics',
-    available: true,
+    prodGroup: 'default',
+    values: [
+      ['name', 'Wireless Mouse'],
+      ['price', 29.99],
+      ['category', 'Electronics'],
+      ['available', true],
+    ],
   },
   {
     id: 2,
-    name: 'Bluetooth Speaker',
-    price: 79.99,
-    category: 'Electronics',
-    available: false,
+    prodGroup: 'default',
+    values: [
+      ['name', 'Bluetooth Speaker'],
+      ['price', 79.99],
+      ['category', 'Electronics'],
+      ['available', false],
+    ],
   },
   {
     id: 3,
-    name: 'Organic Apples',
-    price: 4.99,
-    category: 'Food',
-    available: true,
+    prodGroup: 'food',
+    values: [
+      ['name', 'Organic Apples'],
+      ['price', 4.99],
+      ['category', 'Food'],
+      ['available', true],
+      ['vat', 3.7],
+      ['origin', 'China'],
+    ],
   },
   {
     id: 4,
-    name: 'Whole Wheat Bread',
-    price: 2.49,
-    category: 'Food',
-    available: true,
+    prodGroup: 'food',
+    values: [
+      ['name', 'Whole Wheat Bread'],
+      ['price', 2.49],
+      ['category', 'Food'],
+      ['available', true],
+      ['vat', 2.8],
+      ['origin', 'Bulgaria'],
+    ],
   },
   {
     id: 5,
-    name: 'Dark Chocolate',
-    price: 5.99,
-    category: 'Food',
-    available: false,
+    prodGroup: 'food',
+    values: [
+      ['name', 'Dark Chocolate'],
+      ['price', 5.99],
+      ['category', 'Food'],
+      ['available', false],
+      ['vat', 11.6],
+      ['origin', 'UK'],
+    ],
   },
   {
     id: 6,
-    name: 'Cotton T-Shirt',
-    price: 19.99,
-    category: 'Clothing',
-    available: true,
+    prodGroup: 'default',
+    values: [
+      ['name', 'Cotton T-Shirt'],
+      ['price', 19.99],
+      ['category', 'Clothing'],
+      ['available', true],
+    ],
   },
   {
     id: 7,
-    name: 'Denim Jeans',
-    price: 49.99,
-    category: 'Clothing',
-    available: true,
+    prodGroup: 'default',
+    values: [
+      ['name', 'Denim Jeans'],
+      ['price', 49.99],
+      ['category', 'Clothing'],
+      ['available', true],
+    ],
   },
   {
     id: 8,
-    name: 'Hooded Sweatshirt',
-    price: 39.99,
-    category: 'Clothing',
-    available: false,
+    prodGroup: 'default',
+    values: [
+      ['name', 'Hooded Sweatshirt'],
+      ['price', 39.99],
+      ['category', 'Clothing'],
+      ['available', false],
+    ],
   },
   {
     id: 9,
-    name: 'Mechanical Keyboard',
-    price: 99.99,
-    category: 'Electronics',
-    available: true,
+    prodGroup: 'default',
+    values: [
+      ['name', 'Mechanical Keyboard'],
+      ['price', 99.99],
+      ['category', 'Electronics'],
+      ['available', true],
+    ],
   },
   {
     id: 10,
-    name: 'USB-C Charger',
-    price: 24.99,
-    category: 'Electronics',
-    available: true,
+    prodGroup: 'default',
+    values: [
+      ['name', 'USB-C Charger'],
+      ['price', 24.99],
+      ['category', 'Electronics'],
+      ['available', true],
+    ],
   },
 ];
