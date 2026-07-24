@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Product, DEFAULT_PRODUCTS } from './products';
+import { Product, DEFAULT_PRODUCTS, FIELDS, FieldSpec, PROD_GROUPS } from './products';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +15,46 @@ export class App {
   editingProduct = signal<Product | null>(null);
 
   products: Product[] = this.loadProducts();
+
+  getFieldValue(product: Product, key: string): any {
+    const entry = product.values.find(v => v[0] === key);
+    return entry ? entry[1] : undefined;
+  }
+
+  setFieldValue(product: Product, key: string, value: any) {
+    const entry = product.values.find(v => v[0] === key);
+    if (entry) {
+      entry[1] = value;
+    } else {
+      product.values.push([key, value]);
+    }
+  }
+
+  getFieldsForGroup(groupId: string): FieldSpec[] {
+    const group = PROD_GROUPS.find(g => g.id === groupId);
+    if (!group) return [];
+    return FIELDS.filter(f => group.fields.includes(f.key));
+  }
+
+  getProductGroups() {
+    return PROD_GROUPS;
+  }
+
+  onGroupChange() {
+    const product = this.editingProduct();
+    if (!product) return;
+
+    // Initialize missing fields for the new group
+    const fields = this.getFieldsForGroup(product.prodGroup);
+    fields.forEach(field => {
+      if (this.getFieldValue(product, field.key) === undefined) {
+        let defaultValue: any = '';
+        if (field.type === 'number') defaultValue = 0;
+        if (field.type === 'boolean') defaultValue = false;
+        this.setFieldValue(product, field.key, defaultValue);
+      }
+    });
+  }
 
   private loadProducts(): Product[] {
     const saved = localStorage.getItem('products');
@@ -41,7 +81,7 @@ export class App {
 
   selectProduct(product: Product) {
     this.selectedProduct.set(product);
-    this.editingProduct.set({ ...product });
+    this.editingProduct.set(JSON.parse(JSON.stringify(product)));
   }
 
   addProduct() {
@@ -51,10 +91,13 @@ export class App {
 
     const newProduct: Product = {
       id: nextId,
-      name: '',
-      price: 0,
-      category: 'Electronics',
-      available: true
+      prodGroup: 'default',
+      values: [
+        ['name', ''],
+        ['price', 0],
+        ['category', 'Electronics'],
+        ['available', true]
+      ]
     };
 
     this.selectedProduct.set(null); // It's a new entry
@@ -63,17 +106,21 @@ export class App {
 
   saveProduct() {
     const edited = this.editingProduct();
-    if (!edited || !edited.name || edited.price === null || edited.price === undefined) return;
+    if (!edited) return;
+
+    const name = this.getFieldValue(edited, 'name');
+    const price = this.getFieldValue(edited, 'price');
+    if (!name || price === null || price === undefined) return;
 
     const index = this.products.findIndex(p => p.id === edited.id);
     if (index !== -1) {
       // Update existing
-      this.products[index] = { ...edited };
+      this.products[index] = JSON.parse(JSON.stringify(edited));
     } else {
       // Add new
-      this.products.push({ ...edited });
+      this.products.push(JSON.parse(JSON.stringify(edited)));
     }
-    this.selectedProduct.set({ ...edited });
+    this.selectedProduct.set(JSON.parse(JSON.stringify(edited)));
     this.editingProduct.set(null);
     this.saveToLocalStorage();
   }
