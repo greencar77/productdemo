@@ -1,7 +1,7 @@
 export interface FieldSpec {
   key: string;
   label: string;
-  type: 'text' | 'number' | 'select' | 'boolean';
+  type: 'text' | 'number' | 'select' | 'boolean' | 'date';
   required: boolean;
   options?: string[];
 }
@@ -44,6 +44,12 @@ export const FIELDS: FieldSpec[] = [
     type: 'text',
     required: true,
   },
+  // {
+  //   key: 'created',
+  //   label: 'Created',
+  //   type: 'date',
+  //   required: true,
+  // },
 ];
 
 export interface ProductGroup {
@@ -58,7 +64,7 @@ export const PROD_GROUPS: ProductGroup[] = [
   },
   {
     id: 'group_with_vat',
-    fields: ['category', 'name', 'price', 'vat', 'origin', 'available'],
+    fields: ['category', 'name', 'price', 'vat', 'available'],
   },
 ];
 

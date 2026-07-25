@@ -61,6 +61,8 @@ export class App {
         return 0;
       case 'boolean':
         return false;
+      case 'date':
+        return new Date().toISOString().split('T')[0];
       case 'select':
         return field.options && field.options.length > 0 ? field.options[0] : undefined;
       case 'text':
@@ -119,7 +121,8 @@ export class App {
 
     const name = this.getFieldValue(edited, 'name');
     const price = this.getFieldValue(edited, 'price');
-    if (!name || price === null || price === undefined) return;
+    const created = this.getFieldValue(edited, 'created');
+    if (!name || price === null || price === undefined || (edited.prodGroup === 'default' && !created)) return;
 
     const index = this.products.findIndex((p) => p.id === edited.id);
     if (index !== -1) {

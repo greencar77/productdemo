@@ -75,6 +75,12 @@
                            [ngModel]="getFieldValue(product, field.key)"
                            (ngModelChange)="setFieldValue(product, field.key, $event)" />
                   }
+                  @case ('date') {
+                    <input [name]="field.key" type="date" [required]="field.required"
+                           [ngModel]="getFieldValue(product, field.key)"
+                           (ngModelChange)="setFieldValue(product, field.key, $event)"
+                           #f="ngModel" [class.invalid]="f.invalid && f.touched" />
+                  }
                 }
 
                 @if (field.required) {
