@@ -1,5 +1,7 @@
 [Requirements](.junie/guidelines.md)
 
+# Screenshot
+
 ![Application Screenshot](screenshot.png)
 
 # Productdemo
