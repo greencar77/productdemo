@@ -115,20 +115,41 @@ export class App {
     this.editingProduct.set(newProduct);
   }
 
-  saveProduct() {
+  isProductValid(): boolean {
     const edited = this.editingProduct();
-    if (!edited) return;
+    if (!edited) return false;
 
-    // Dynamic validation based on PROD_GROUPS and FIELDS
     const fields = this.getFieldsForGroup(edited.prodGroup);
     for (const field of fields) {
+      const value = this.getFieldValue(edited, field.key);
       if (field.required) {
-        const value = this.getFieldValue(edited, field.key);
-        if (value === undefined || value === null || (field.type !== 'number' && value === '')) {
-          return; // Validation failed
+        if (
+          value === undefined ||
+          value === null ||
+          (field.type !== 'number' && String(value).trim() === '')
+        ) {
+          return false;
+        }
+      }
+
+      if (field.dependsOn) {
+        const dependencyExists = fields.some((f) => f.key === field.dependsOn);
+        if (
+          dependencyExists &&
+          (value === undefined ||
+            value === null ||
+            (field.type !== 'number' && String(value).trim() === ''))
+        ) {
+          return false;
         }
       }
     }
+    return true;
+  }
+
+  saveProduct() {
+    if (!this.isProductValid()) return;
+    const edited = this.editingProduct()!;
 
     const index = this.products.findIndex((p) => p.id === edited.id);
     if (index !== -1) {
@@ -141,6 +162,14 @@ export class App {
     this.selectedProduct.set(JSON.parse(JSON.stringify(edited)));
     this.editingProduct.set(null);
     this.saveToLocalStorage();
+  }
+
+  isFieldShown(field: FieldSpec, product: Product) {
+    if (field.dependsOn == null) {
+      return true;
+    }
+    const dependentValue = this.getFieldValue(product, field.dependsOn);
+    return dependentValue != null;
   }
 
   cancelEdit() {

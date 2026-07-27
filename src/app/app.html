@@ -42,6 +42,7 @@
             </div>
 
             @for (field of getFieldsForGroup(product.prodGroup); track field.key) {
+              @if (this.isFieldShown(field, product)) {
               <div class="field">
                 <label>{{ field.label }}{{ field.required ? '*' : '' }}:</label>
 
@@ -61,7 +62,8 @@
                   @case ('select') {
                     <select [name]="field.key" [required]="field.required"
                             [ngModel]="getFieldValue(product, field.key)"
-                            (ngModelChange)="setFieldValue(product, field.key, $event)">
+                            (ngModelChange)="setFieldValue(product, field.key, $event)"
+                            #f="ngModel" [class.invalid]="f.invalid && f.touched">
                       @if (!field.required) {
                         <option [value]="undefined">-- Select --</option>
                       }
@@ -88,10 +90,11 @@
                 }
               </div>
             }
+            }
 
             <div class="actions">
               <button type="button" (click)="cancelEdit()">Cancel</button>
-              <button type="button" class="save-button" (click)="saveProduct()" [disabled]="productForm.invalid">Save</button>
+              <button type="button" class="save-button" (click)="saveProduct()" [disabled]="productForm.invalid || !isProductValid()">Save</button>
               <button type="button" class="delete-button" (click)="deleteProduct(product.id)">Delete</button>
             </div>
           </form>
