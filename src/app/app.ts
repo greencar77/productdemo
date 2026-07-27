@@ -119,10 +119,16 @@ export class App {
     const edited = this.editingProduct();
     if (!edited) return;
 
-    const name = this.getFieldValue(edited, 'name');
-    const price = this.getFieldValue(edited, 'price');
-    const created = this.getFieldValue(edited, 'created');
-    if (!name || price === null || price === undefined || (edited.prodGroup === 'default' && !created)) return;
+    // Dynamic validation based on PROD_GROUPS and FIELDS
+    const fields = this.getFieldsForGroup(edited.prodGroup);
+    for (const field of fields) {
+      if (field.required) {
+        const value = this.getFieldValue(edited, field.key);
+        if (value === undefined || value === null || (field.type !== 'number' && value === '')) {
+          return; // Validation failed
+        }
+      }
+    }
 
     const index = this.products.findIndex((p) => p.id === edited.id);
     if (index !== -1) {
